@@ -11,7 +11,7 @@ public class LGraphics extends PGraphicsOpenGL {
 	public Lumarca lumarca;
 	public PShader sphereShader;
 	public PShader boxShader;
-	public PImage lumarcaData;
+	public PImage mapData;
 
 	public LGraphics() {
 		super();
@@ -51,12 +51,9 @@ public class LGraphics extends PGraphicsOpenGL {
 	}
 
 	private void buildShape(PShader myShader, float r) {
-		myShader.set("lumarcaMap", lumarcaData);
-		myShader.set("stringCount", (float) lumarca.numOfStrings);
-		myShader.set("cameraZ", cameraZ);
-		myShader.set("marginSize", (float) lumarca.marginSize);
-		myShader.set("screenRes", (float) width, (float) height, resZ);
-		myShader.set("pxPerString", (float) width / (float) lumarca.numOfStrings);
+		myShader.set("xyzMax", lumarca.max);
+		myShader.set("screenSize", (float) width, (float) height);
+		myShader.set("mapData", mapData);
 		PStyle s = getStyle();
 		colorCalc(s.fillColor);
 		myShader.set("fill", calcR, calcG, calcB, calcA);
