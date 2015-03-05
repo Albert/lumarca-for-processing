@@ -12,7 +12,7 @@ import processing.data.JSONObject;
 
 public class Lumarca extends ProcessingObject {
 	public final static String RENDERER = "lumarca.LGraphics"; // gets called in end user's code: size(400, 400, Lumarca.RENDERER);
-	private LGraphics gfx;
+	public LGraphics gfx;
 	public PVector max;
 	public float farDepth;
 	public float nearDepth;
@@ -41,7 +41,7 @@ public class Lumarca extends ProcessingObject {
 
 		/* build lines */
 		JSONArray lineDepths = config.getJSONArray("lineDepths");
-		ArrayList<Line> lines = new ArrayList<Line>();
+		lines = new ArrayList<Line>();
 
 		for (int i = 0; i < numberOfLines; i++) {
 			/* z */

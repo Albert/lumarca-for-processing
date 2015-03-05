@@ -17,6 +17,33 @@ public class Line {
 		this.lumarca = lumarca;
 	}
 
+	public void draw(float y1, float y2) {
+		float top = y1 > y2 ? y1 : y2;
+		float bot = top == y1 ? y2 : y1;
+		float clampTop = Math.max(0, Math.min(lumarca.max.y, top));
+		float clampBot = Math.max(0, Math.min(lumarca.max.y, bot));
+	    float drawHeight = clampTop - clampBot;
+
+		float rectTop = PApplet.map(clampTop,
+			lumarca.max.y, 0,
+			0, lumarca.pApplet.height);
+		float rectHeight = PApplet.map(drawHeight,
+			0, lumarca.max.y,
+			0, lumarca.pApplet.height);
+
+		PMatrix3D invMatrix;
+		invMatrix = lumarca.gfx.modelviewInv.get();
+		invMatrix.apply(lumarca.gfx.camera);
+
+		lumarca.pApplet.pushMatrix();
+		lumarca.pApplet.pushStyle();
+			lumarca.pApplet.applyMatrix(invMatrix);
+			lumarca.pApplet.noStroke();
+			lumarca.pApplet.rect(this.screenXPos, rectTop, Line.sliceWidth, rectHeight);
+		lumarca.pApplet.popStyle();
+		lumarca.pApplet.popMatrix();
+	}
+
 	public void renderMap(PGraphics mapBuffer) {
 		int xColor = (int) PApplet.map(	this.x,
 										0, lumarca.max.x,
