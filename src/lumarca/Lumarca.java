@@ -45,10 +45,8 @@ public class Lumarca extends ProcessingObject {
 
 		for (int i = 0; i < numberOfLines; i++) {
 			/* z */
-			float lineDepth = lineDepths.getFloat(i, 1.0000f);
-			float lineZ = PApplet.map(	lineDepth,
-										nearDepth, farDepth,
-										0, max.z);
+			float lineZ = lineDepths.getFloat(i);
+			float lineFromProjector = lineZ + nearDepth;
 
 			/* x */
 			/* x px numbers */
@@ -61,12 +59,12 @@ public class Lumarca extends ProcessingObject {
 													- max.x / 2.0f, max.x / 2.0f);
 
 			// analogous fraction:  signedX / lineDepth = signedXOnNearPlane / nearDepth;
-			float signedX = (signedXOnNearPlane / nearDepth) * lineDepth;
+			float signedX = (signedXOnNearPlane / nearDepth) * lineFromProjector;
 			float lineX = signedX + (max.x / 2.0f);
 
 			/* y */
 			// analogous fraction: projectedHeight / lineDepth = yMax / nearDepth;
-			float projectedHeight = (max.y / nearDepth) * lineDepth;
+			float projectedHeight = (max.y / nearDepth) * lineFromProjector;
 			lines.add(new Line(lineX, lineZ, sliceXOffset, projectedHeight, this));
 		}
 		
