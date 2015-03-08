@@ -51,22 +51,24 @@ public class LGraphics extends PGraphicsOpenGL {
 	}
 
 	private void buildShape(PShader myShader, float r) {
+		// lumarca geometry
 		myShader.set("xyzMax", lumarca.max);
 		myShader.set("screenSize", (float) width, (float) height);
 		myShader.set("mapData", mapData);
+
+		// styling and geo
 		PStyle s = getStyle();
 		colorCalc(s.fillColor);
 		myShader.set("fill", calcR, calcG, calcB, calcA);
-
 		//colorCalc(s.strokeColor);
 		//myShader.set("shellColor", calcR, calcG, calcB, calcA);
-
-		PMatrix3D invMatrix;
-		invMatrix = modelviewInv.get();
-		invMatrix.apply(camera);
-		myShader.set("invMatrix", invMatrix);
 		myShader.set("radius", r);
 		//myShader.set("shellWeight", s.strokeWeight);
+
+		// matrix transforms
+		PMatrix3D invMatrix = modelviewInv.get();
+		invMatrix.apply(camera);
+		myShader.set("invMatrix", invMatrix);
 
 		shader(myShader);
 
