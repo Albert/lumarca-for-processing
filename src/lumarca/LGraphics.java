@@ -5,9 +5,6 @@ import processing.opengl.*;
 
 public class LGraphics extends PGraphicsOpenGL {
 
-	public float resZ;
-	public float cameraZ;
-	public float pxPerUnit;
 	public Lumarca lumarca;
 	public PShader sphereShader;
 	public PShader boxShader;
@@ -40,10 +37,22 @@ public class LGraphics extends PGraphicsOpenGL {
 	//public void background(int rgb) {
 	//}
 
+	/**
+	* Draw a sphere.
+	*
+	* @param  r		radius
+	*/
+
 	@Override
 	public void sphere(float r) {
 		buildShape(sphereShader, r);
 	}
+
+	/**
+	* Draw a box.
+	*
+	* @param  r		radius
+	*/
 
 	@Override
 	public void box(float r) {
@@ -52,7 +61,7 @@ public class LGraphics extends PGraphicsOpenGL {
 
 	private void buildShape(PShader myShader, float r) {
 		// lumarca geometry
-		myShader.set("xyzMax", lumarca.max);
+		myShader.set("xyzMax", lumarca.size);
 		myShader.set("screenSize", (float) width, (float) height);
 		myShader.set("mapData", mapData);
 

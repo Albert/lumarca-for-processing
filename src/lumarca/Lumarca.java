@@ -12,12 +12,32 @@ import processing.data.JSONObject;
 
 public class Lumarca extends ProcessingObject {
 	public final static String RENDERER = "lumarca.LGraphics"; // gets called in end user's code: size(400, 400, Lumarca.RENDERER);
-	public LGraphics gfx;
-	public PVector max;
-	public float farDepth;
-	public float nearDepth;
-	public ArrayList<Line> lines;
+	public PVector size;
+	private LGraphics gfx;
+	private float farDepth;
+	private float nearDepth;
+	private ArrayList<Line> lines;
 
+	/**
+	* <strong>Builds a new Lumarca</strong>
+	* 
+	* <p>* Requires a json config file.  Configurations are as follows:</p>
+	* 
+	* <ul>
+	*   <li>"structureSize" refers to the size of the render field in real units*. X is width, Z is depth. You can ignore Y (height), as this will be calculated based on X and aspect ratio.</li>
+	*   <li>"deepestProjection" is the distance in real units* from the projector's focal point to the far end of the render field.</li>
+	*   <li>"margin" is the number of black pixels between each column of pixels. There currently is a bug where only even numbers work here</li>
+	*   <li>"lineDepths" describes the arrangement of the string. The floats describe the Z coordinate of all the strings. The array is sorted from left-most column of pixels to right-most column of pixels.</li>
+	*   <li>"ignoreThis" can be ignored completely</li>
+	* </ul>
+	* 
+	* <p>* Real units are like "inches" or "centimeters".  Whatever you use should stay consistent.</p>
+	* 
+	* <p>If you make updates to the config file, you should delete the "map" file, which is a .png that gets generated in the data folder with a name like 69dd6a25aa04f26.png.</p>
+	* 
+	* @param  jsonPath	Name of the config file
+	* @param  p			the applet you are pointing it at (usually "this")
+	*/
 	public Lumarca(String jsonPath, PApplet p) {
 		this.pApplet = p;
 		/* renderer stuff */
@@ -32,12 +52,12 @@ public class Lumarca extends ProcessingObject {
 		farDepth = config.getFloat("deepestProjection");
 		nearDepth = farDepth - maxZ;
 		float maxY = maxX * ((float) p.height / (float) p.width);
-		max = new PVector(maxX, maxY, maxZ);
+		size = new PVector(maxX, maxY, maxZ);
 
 		/* px numbers */
 		int numberOfLines = config.getJSONArray("lineDepths").size();
 		int pxPerSlice = p.width / numberOfLines;
-		Line.sliceWidth = pxPerSlice - config.getInt("margin");
+		Line.setSliceWidth(pxPerSlice - config.getInt("margin"));
 
 		/* build lines */
 		JSONArray lineDepths = config.getJSONArray("lineDepths");
@@ -56,15 +76,15 @@ public class Lumarca extends ProcessingObject {
 			/* x meatspace numbers */
 			float signedXOnNearPlane = PApplet.map(	slicePxCenter,
 													0, p.width,
-													- max.x / 2.0f, max.x / 2.0f);
+													- size.x / 2.0f, size.x / 2.0f);
 
 			// analogous fraction:  signedX / lineDepth = signedXOnNearPlane / nearDepth;
 			float signedX = (signedXOnNearPlane / nearDepth) * lineFromProjector;
-			float lineX = signedX + (max.x / 2.0f);
+			float lineX = signedX + (size.x / 2.0f);
 
 			/* y */
 			// analogous fraction: projectedHeight / lineDepth = yMax / nearDepth;
-			float projectedHeight = (max.y / nearDepth) * lineFromProjector;
+			float projectedHeight = (size.y / nearDepth) * lineFromProjector;
 			lines.add(new Line(lineX, lineZ, sliceXOffset, projectedHeight, this));
 		}
 		
@@ -100,6 +120,18 @@ public class Lumarca extends ProcessingObject {
 		}
 
 		gfx.mapData = p.loadImage(p.dataPath(mapKey + ".png"));
+	}
+
+	public LGraphics getGfx() {
+		return gfx;
+	}
+
+	public Line getLine(int index) {
+		return lines.get(index);
+	}
+
+	public int getLineCount() {
+		return lines.size();
 	}
 
 	private void bindToRenderer(PApplet p) {
