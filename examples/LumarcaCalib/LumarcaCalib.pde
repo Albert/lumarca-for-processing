@@ -13,22 +13,22 @@ import lumarca.*;
 public Lumarca thisLumarca;
 
  void setup() {
-  size(1024, 768, Lumarca.RENDERER);
+  size(1024, 768, "lumarca.LGraphics");
   thisLumarca = new Lumarca("lumarcaConfig.json", this);
 }
 
 public void draw() {
   background(0);
 
-  for (int i = 0; i < thisLumarca.lines.size(); i++) {
-    Line l = thisLumarca.lines.get(i);
-    if (l.z < thisLumarca.max.z * .33333) {
+  for (int i = 0; i < thisLumarca.getLineCount(); i++) {
+    Line l = thisLumarca.getLine(i);
+    if (l.z < thisLumarca.size.z * .33333) {
       fill(255, 0, 0);
-    } else if (l.z < thisLumarca.max.z * .6666) {
+    } else if (l.z < thisLumarca.size.z * .6666) {
       fill(0, 255, 0);
     } else {
       fill(0, 0, 255);
     }
-    l.draw(0, thisLumarca.max.y);
+    l.draw(0, thisLumarca.size.y);
   }
 }
