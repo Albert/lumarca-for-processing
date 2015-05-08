@@ -74,6 +74,9 @@ Features I'd like to build
 --------------------------
 Here are some features that I'd like to build into the project
 
+* better support for different types of construction configurations (one per depth) including
+  * calibration patterns that facilitate different construction techniques
+  * string location generators
 * stroke and all stroke functions (like color, weight) to be used as a way to draw surface pixels of geometries
 * custom shaders to create your own volumetric effects
 * convenience methods for the following:
