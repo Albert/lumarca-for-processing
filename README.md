@@ -1,11 +1,18 @@
 Intro
 =====
 
+[Installation instructions and JavaDoc](http://lumarca.info/code/)
+
 [Lumarca](http://lumarca.info/) is a volumetric display that creates digital 3d images in real 3d space.
 
 [Processing](https://processing.org/) is a simplified Java environment for creative coders.
 
-This library will render your 3d Processing scenes in the Lumarca.  So, for example, if you have this:
+This library will render your 3d Processing scenes in the Lumarca.
+
+
+Usage
+=====
+If you are writing a 3d Processing sketch, and have this:
 
 ```
 void setup() {
@@ -88,5 +95,3 @@ Here are some features that I'd like to build into the project
 Links
 ---------------------------------
 [Totally Nerdy and non-sessential geek out on why this library is so cool](http://albert-hwang.com/2015/03/lumarca-for-processing/)
-
-[My site](http://albert-hwang.com)
