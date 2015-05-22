@@ -90,6 +90,7 @@ Here are some features that I'd like to build into the project
   * orientation definition (y-up, y-down, z-up)
   * setting origin at center or at corner
   * setting units of measure as real units, normalized 0 to 1, or pixel approximations
+* decouple the initializer from the renderer so that you can have a Lumarca object while still using P3D
 
 
 Links
